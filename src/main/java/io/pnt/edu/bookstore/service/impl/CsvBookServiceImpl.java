@@ -18,45 +18,41 @@ import io.pnt.edu.bookstore.dto.Book;
 import io.pnt.edu.bookstore.service.BookService;
 
 @Service("csvBookServiceImpl")
-public class CsvBookServiceImpl implements BookService{
-	private List<Book> bookList =new ArrayList<>();
-	
+public class CsvBookServiceImpl implements BookService {
+	private List<Book> bookList = new ArrayList<>();
+
 	BufferedReader br = null;
-	
-	
-	
-	
+
 	@Override
 	public List<Book> findAll() {
 		try {
-			//CSV파일을 읽어서 list에 추가
+			// CSV파일을 읽어서 list에 추가
 			br = Files.newBufferedReader(Paths.get("D:\\books.csv"));
 			Charset.forName("UTF-8");
 			String line = "";
-			
-			while((line = br.readLine()) !=null) {
+
+			while ((line = br.readLine()) != null) {
 				List<String> tempList = new ArrayList<String>();
-				String array[] =line.split(",");
+				String array[] = line.split(",");
 				tempList = Arrays.asList(array);
 				System.out.println(tempList);
 				bookList.add((Book) tempList);
-				
+
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null) {
+					br.close();
 				}
-			
-			}catch(FileNotFoundException e){
+			} catch (IOException e) {
 				e.printStackTrace();
-			}catch(IOException e){
-				e.printStackTrace();
-			}finally {
-				try {
-					if(br != null){
-						br.close();
-					}
-				}catch(IOException e) {
-					e.printStackTrace();
-				}
-			
-			
+			}
+
 		}
 		// TODO Auto-generated method stub
 		return bookList;
@@ -65,9 +61,7 @@ public class CsvBookServiceImpl implements BookService{
 	@Override
 	public List<Book> findByName(String name) {
 
-		return bookList.stream()
-				.filter(b -> b.getTitle().contains(name))
-				.collect(Collator.tolist());
+		return null; //bookList.stream().filter(b -> b.getTitle().contains(name)).collect(Collator);
 	}
 
 	@Override
